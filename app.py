@@ -1,4 +1,4 @@
-# Import important python libraries
+# Import python libraries
 import streamlit as st
 import mysql.connector
 import pandas as pd
@@ -13,7 +13,7 @@ db = mysql.connector.connect(host=st.secrets['db_host'],user=st.secrets['db_user
 cursor = db.cursor()
 cursor.execute("USE world_university_rankings_2023")
 
-# Build a web app using Python with Streamlit
+# Build a web app using Streamlit
 st.title('Top gl\U0001F30Dbal universities 2023')
 with st.sidebar:
     choose = option_menu("Main Menu", ["About", 
@@ -41,7 +41,6 @@ if choose == "About":
 elif choose == "Top global universities":
     st.subheader("\U0001F31F Top Global Universities")
     num = st.selectbox('Select the Number of Top Universities', [10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-    # Query to SELECT the top global universities based on QS ranking
     query_top = f"SELECT university.institution, university.rank, university_location.location FROM university JOIN university_location ON university.location_code = university_location.location_code ORDER BY rank ASC LIMIT {num}"
     cursor.execute(query_top)
     top_universities = cursor.fetchall()
@@ -66,7 +65,6 @@ elif choose == "Top universities based on QS ranking indicators":
     st.write('\U0001F4DD Remark: Academic reputation (ar), Employer reputation (er), Faculty/student ratio (fsr), Citations per faculty (cpf), International faculty ratio (ifr), and International student ratio (isr), International research network (irn), Employment outcomes (ger).')
     ranking_indicators = {'AR score': 'ar_score', 'ER score': 'er_score', 'FSR score': 'fsr_score', 'CPF score': 'cpf_score', 'IFR score': 'ifr_score', 'ISR score': 'isr_score', 'IRN score': 'irn_score', 'GER score': 'ger_score'}
     selected_indicator = st.selectbox('Select a QS Ranking Indicator', list(ranking_indicators.keys()))
-    # Query to SELECT the top universities based on the selected QS ranking indicator
     query_top = f"SELECT university.institution, university.rank, ranking.{ranking_indicators[selected_indicator]} FROM university JOIN ranking ON university.rank = ranking.rank ORDER BY ranking.{ranking_indicators[selected_indicator]} DESC LIMIT 10"
     cursor.execute(query_top)
     top_universities = cursor.fetchall()
@@ -124,7 +122,6 @@ elif choose == "CRUD":
     # Create operation
     if choice == "Create":
         st.subheader("Create Record")
-    # Show a form for the user to enter the data for a new record
         new_institution = st.text_input("Enter Institution")
         cursor.execute("SELECT MAX(rank) FROM ranking")
         max_rank = cursor.fetchone()[0] + 1
@@ -137,7 +134,7 @@ elif choose == "CRUD":
         new_isr_score = st.number_input("Enter ISR Score", min_value=0.0)
         new_irn_score = st.number_input("Enter IRN Score", min_value=0.0)
         new_ger_score = st.number_input("Enter GER Score", min_value=0.0)
-    # Set all rank values to the new_rank
+        
         new_ar_rank = new_rank
         new_er_rank = new_rank
         new_fsr_rank = new_rank
@@ -146,7 +143,7 @@ elif choose == "CRUD":
         new_isr_rank = new_rank
         new_irn_rank = new_rank
         new_ger_rank = new_rank
-    # The "Save" button for inserting the new record into the database
+
         if st.button("Save"):
             query = "INSERT INTO ranking (rank, ar_score, ar_rank, er_score, er_rank, fsr_score, fsr_rank, cpf_score, cpf_rank, ifr_score, ifr_rank, isr_score, isr_rank, irn_score, irn_rank, ger_score, ger_rank) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             cursor.execute(query, (new_rank, new_ar_score, new_ar_rank, new_er_score, new_er_rank, new_fsr_score, new_fsr_rank, new_cpf_score, new_cpf_rank, new_ifr_score, new_ifr_rank, new_isr_score, new_isr_rank, new_irn_score, new_irn_rank, new_ger_score, new_ger_rank))
@@ -160,10 +157,9 @@ elif choose == "CRUD":
         st.subheader("Update Record")
         universities = sorted(df['Institution'].unique())
         selected_university = st.selectbox("Select a University to Update", universities)
-        # Show the current values for the selected university in table form
         current_values = df.loc[df['Institution'] == selected_university].iloc[0]
         st.table(current_values.to_frame().T.reset_index(drop=True))
-        # Show a form for the user to enter the new values for the selected university
+
         new_institution = st.text_input("Enter Institution", value=current_values['Institution'])
         new_rank = st.number_input("Enter QS-Ranking", min_value=1, max_value=max_rank, value=current_values['QS-Ranking'])
         new_ar_score = st.number_input("Enter AR Score", min_value=0.0, value=current_values['AR Score'])
@@ -174,7 +170,7 @@ elif choose == "CRUD":
         new_isr_score = st.number_input("Enter ISR Score", min_value=0.0, value=current_values['ISR Score'])
         new_irn_score = st.number_input("Enter IRN Score", min_value=0.0, value=current_values['IRN Score'])
         new_ger_score = st.number_input("Enter GER Score", min_value=0.0, value=current_values['GER Score'])
-        # Set all rank values to the new_rank
+
         new_ar_rank = new_rank
         new_er_rank = new_rank
         new_fsr_rank = new_rank
@@ -183,9 +179,8 @@ elif choose == "CRUD":
         new_isr_rank = new_rank
         new_irn_rank = new_rank
         new_ger_rank = new_rank
-        # Create a button to update the record
+
         if st.button("Update Record"):
-        # Update the ranking table
             cursor.execute("""
                 UPDATE ranking SET ar_score=%s, ar_rank=%s, er_score=%s, 
                 er_rank=%s, fsr_score=%s, fsr_rank=%s, 
@@ -199,7 +194,7 @@ elif choose == "CRUD":
                 new_ifr_rank, new_isr_score, new_isr_rank, 
                 new_irn_score, new_irn_rank, new_ger_score, 
                 new_ger_rank, str(current_values['QS-Ranking'])))
-            # Update the university table
+
             cursor.execute("""UPDATE university SET institution=%s WHERE rank=%s""", (new_institution, str(current_values['QS-Ranking'])))
             cnx.commit()
             st.success(f"All record(s) in institution name {selected_university} have been updated")
@@ -207,17 +202,15 @@ elif choose == "CRUD":
     # Delete operation
     elif choice == "Delete":
         st.subheader("Delete Record")
-        # Show a form for the user to enter the name of the institution to delete
+
         delete_institution = st.text_input("Enter the Institution name to delete")
         if st.button("Delete"):
-        # Check if the institution exists in the database
             query = "SELECT rank FROM university WHERE institution = %s"
             cursor.execute(query, (delete_institution,))
             result = cursor.fetchone()
             if not result:
                 st.warning(f"Do not found the institution name '{delete_institution}'")
             else:
-                # Delete the record(s) from the database
                 delete_rank = result[0]
                 query = "DELETE FROM ranking WHERE rank = %s"
                 cursor.execute(query, (delete_rank,))
