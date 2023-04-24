@@ -7,7 +7,7 @@ import plotly.graph_objects as go
 
 
 # Connect to MySQL database
-db = mysql.connector.connect(host="34.142.157.237",user="wunchana",password="wunchana", database="world_university_rankings_2023")
+db = mysql.connector.connect(host=st.secrets["34.142.157.237"],user=st.secrets["wunchana"],password=st.secrets["wunchana"], database="world_university_rankings_2023")
 
 # Create a cursor object 
 cursor = db.cursor()
