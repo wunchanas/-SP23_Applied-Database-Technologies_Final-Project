@@ -10,10 +10,10 @@ import plotly.graph_objects as go
 #db = mysql.connector.connect(host="34.142.157.237",user="wunchana",password="wunchana", database="world_university_rankings_2023")
 
 # Retrieve secrets from Streamlit
-db_host = st.secrets["34.142.157.237"]
-db_user = st.secrets["wunchana"]
-db_pass = st.secrets["wunchana"]
-db_name = st.secrets["world_university_rankings_2023"]
+db_host = st.secrets['db_host']
+db_user = st.secrets['db_user']
+db_pass = st.secrets['db_pass']
+db_name = st.secrets['db_name']
 
 # Connect to the database
 db = mysql.connector.connect(
