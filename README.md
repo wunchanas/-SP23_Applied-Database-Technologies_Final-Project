@@ -23,8 +23,11 @@ https://www.kaggle.com/datasets/jkanthony/world-university-rankings-202223
 2023 QS World University Rankings.csv
 ### Initial data summary
 Number of records: 1422
+
 Number of attributes: 21
+
 Attribute information: Rank, institution, location, code location, ar score, ar rank, er score, er rank, fsr score, fsr rank, cpf score, cpf rank, ifr score, ifr rank, isr score, isr rank, irn score, irn rank, ger score, ger rank, score scaled
+
 Abbreviation: Academic reputation (ar), Employer reputation (er), Faculty/student ratio (fsr), Citations per faculty (cpf), International faculty ratio (ifr), and International student ratio (isr), International research network (irn), Employment outcomes (ger). 
 
 
