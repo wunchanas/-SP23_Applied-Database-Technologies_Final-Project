@@ -1,1 +1,1 @@
-# -SP23_Applied-Database-Technologies_Final-Project
+# SP23_Applied-Database-Technologies_Final-Project
