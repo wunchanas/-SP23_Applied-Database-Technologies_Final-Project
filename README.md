@@ -8,6 +8,10 @@
 ## Application Description 
 The QS World University Rankings (QS-WUR) is one of the most important university ranking systems in the world. Our database web application will provide a user-friendly web application database that allows users to interact with the dataset from Kaggle QS-WUR 2023, including CRUD (create, read, update, and delete) and visualize some results. This web application can give helpful insights and information to various stakeholders in the higher education sector, such as students, parents, researchers, universities, and policymakers. 
 
+The web application namely "Top global universities 2023" is deployed on Streamlit Cloud (https://streamlit.io/cloud) and publicly available to access via the URL as shown below 
+https://wunchanas-sp23-applied-database-technologies-final-p-app-9a4kco.streamlit.app/
+
+
 ## Dataset
 ### Dataset: 
 ### About Dataset
